@@ -1,113 +1,84 @@
-# SAMP-Android
+SAMP-Android
+Bifurcada a partir do SAMP-Android
 
-Forked from [SAMP-Android](https://github.com/y-kalcor/SA-MP-Android "SAMP-Android")
+Zero. Declaração
+1. Declaração pessoal
+1. Todo o processo deste artigo foi testado pelo Windows 10 x64, outros sistemas podem teoricamente, mas alguns detalhes podem ser inconsistentes, resolva você mesmo
 
-## 零.声明
+2. O "diretório raiz" neste artigo refere-se ao diretório absoluto da pasta em que a biblioteca está localizada (por exemplo: C: \ SAMP-Android)
 
-### 1.个人声明
+2. Eu não sou responsável por quaisquer problemas decorrentes do projeto
 
-- 1.本文全程均经过Windows 10 x64测试，其他系统理论上可以，但部分细节处步骤可能不一致，请自行解决
+3. Qualquer pessoa pode usar o método fornecido neste artigo, qualquer pessoa pode realizar desenvolvimento e distribuição secundários, mas não pode excluir os direitos autorais do autor de origem.
 
-- 2.文中“根目录”一次指代本库所在文件夹的绝对目录（如：C:\SAMP-Android）
+4. Não forneço suporte técnico pago ou não (explique que, se você não me incomoda, não me faça perguntas confusas, a menos que haja um problema)
 
-- 2.本人不为本项目衍生的任何问题负责
+Se você tiver circunstâncias especiais, entre em contato comigo QQ1270329917
 
-- 3.任何人均可使用本文提供的方法，任何人均可进行二次开发和发行，但不可以删除源作者的版权
+Agradecimentos especiais: IGTA-fading
 
-- 4.本人不提供任何有偿或无偿技术支持（说明白了就是别来烦我，别问我乱七八糟的问题，除非写的有问题）
+2. Assuntos que precisam de atenção
+1. O chinês atualmente não é suportado. Os chineses serão transcodificados para russo ou ilegíveis por padrão? Use iconv para transferir o fluxo de mensagens da codificação UTF8 para GBK, desenvolva você mesmo
 
-有特殊情况请联系本人 QQ1270329917
+2. A grande maioria dos servidores não está concluída! Não tente abri-lo para fast food
 
-特别感谢：IGTA-褪色
+3. O teclado virtual embutido suporta apenas inglês, números e russo.Não tente usar o método de entrada chinês embutido (você pode criar um conjunto de métodos de entrada chineses um por um e usá-lo para samp?). Encontre o seu próprio caminho
 
-### 2.注意事项
+4. Flash de volta depois de abrir o jogo? O arquivo de configuração do SAMP deve ser colocado no lugar errado. Estude onde você deve colocá-lo no seu celular ou se tiver um problema com a embalagem / assinatura!
 
-- 1.目前不支持中文。中文默认会被转码到俄语或乱码 咋搞呢？用iconv将消息流从UTF8编码转到GBK即可，自己开发去吧
+1. Prepare o meio ambiente
+1. Coisas para baixar
+Esta biblioteca não precisa de explicação
 
-- 2.绝大多数服务器都完不成！别妄图直接拿去开快餐
+Android NDK-R14b compilado
 
-- 3.自带的虚拟键盘只支持英文、数字、俄语，不要妄想搞内置中文输入法了（你能一个人造出一套中文输入法，还用来搞samp？），想支持中文？自己想办法
+JDK assina o apk reembalado
 
-- 4.打开游戏后闪退？SAMP配置文件应该放错位置了，自己研究自己的手机里应该放哪吧 或者你打包/签名出问题了！
+Adicionais: jogo de pacote de dados código de extração: g4fp
 
-## 一.准备环境
+2. Configuração do ambiente do sistema
+Coloque esta biblioteca em um local fixo "diretório raiz"
 
-### 1.需要下载的东西
+Recentemente adicionado à variável de ambiente "Path": 1. O diretório em que o NDK está localizado 2. O diretório bin no diretório em que o jdk está localizado 3. O diretório raiz \ files
 
-- [这个库](https://github.com/Hobr/SA-MP-Android/archive/master.zip) 不用解释
-- [Android-NDK r14b](https://developer.android.com/ndk/downloads/older_releases.html) 编译
-- [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 对重新打包的apk进行签名
+Compilar
+Abra o PowerShell ou cmd
 
-- 附加：游戏数据包 [提取码: g4fp](https://pan.baidu.com/s/1hzLMiT-mOsRTtZxjH8eUzQ)
+>  CD raiz \ J Ni
+ > NDK-root build.cmd NDK_PROJECT_PATH = -B NDK_DEBUG = 0
+3. Desembalar
+>  CD raiz \ F Iles
+ > . \ AO pktool raiz D \ F Iles \ B uild69.apk -o raiz \ F Iles \ Um -f PK
+Pacote Quatro.
+Primeiro substitua o diretório raiz \ libs \ armeabi-v7a \ libsamp.so pelo diretório raiz \ files \ lib \ armeabi-v7a (caso contrário, você não fará nada por um longo tempo ...)
 
-### 2.系统环境配置
+>  diretório raiz do CD \ f iles
+ > . \ a diretório raiz do pktool b \ f iles \ a pk -o diretório raiz \ f iles \ a pk \ d ist \ b uild69.apk -f
+V. Assinatura
+Existem muitos materiais relacionados nesta seção na Internet, você pode consultar os métodos em outros lugares
 
-将本库放到一个固定的位置“根目录”
+1. Gere uma assinatura
+> chcp 936 # Console GBK (também não pode ser executado, mas em alguns casos a saída JDK pode ser ilegível) 
+>  diretório raiz do CD \ iles
+ > keytool -genkey -v -keystore sampandroid.jks -keyalg RSA -keyize 2048 -validity 10000- sampandroid Alias
+ # em seguida, siga as instruções para inserir informações sobre 
+> a keytool -importkeystore -srckeystore sampandroid.jks -destkeystore sampandroid.jks -deststoretype PKCS12
+2. Assinatura
+>  CD raiz \ F Iles \ Um PK \ D IST
+ > o jarsigner -verbose -sigalg SHA1withRSA -digestalg Shal -keystore raiz \ F Iles \ S ampandroid.jks build69.apk sampandroid
+O diretório raiz \ files \ apk \ dist \ build69.apk é a versão final instalável
 
-在环境变量“Path”下分别新增：1.NDK所在目录 2.jdk所在目录下的bin目录 3.根目录\files
+6. Preparação no telefone
+Exclua o GTASA original (se houver pacotes de dados, faça backup com antecedência)
 
-## 二.编译
+Diretório raiz da instalação \ files \ apk \ dist \ build69.apk
 
-打开Powershell或者cmd
+Pacote de recuperação
 
-```bash
-> cd 根目录\jni
-> ndk-build.cmd NDK_PROJECT_PATH=根目录 -B NDK_DEBUG=0
-```
+Copie o diretório no diretório raiz \ diretório de dados para o Android e o diretório (a maioria dos celulares funciona dessa maneira, alguns celulares funcionam inconsistentemente)
 
-## 三.解包
+7. Configuração
+Abra Android \ obb \ com.rockstargames.gtasa \ files \ SAMP \ settings.ini no telefone e modifique as informações relevantes na seção [client] (como o apelido do jogo IP do servidor)
 
-```bash
-> cd 根目录\files
-> .\apktool d 根目录\files\build69.apk -o 根目录\files\apk -f
-```
-
-## 四.打包
-
-先将 根目录\libs\armeabi-v7a\libsamp.so 替换到 根目录\files\lib\armeabi-v7a 目录下（要不然你搞了半天等于啥也没做......）
-
-```bash
-> cd 根目录\files
-> .\apktool b 根目录\files\apk -o 根目录\files\apk\dist\build69.apk -f
-```
-
-## 五.签名
-
-网上有很多本部分的相关资料，可以参照其他地方的方法
-
-### 1.生成签名
-
-```bash
-> chcp 936 # Console GBK（也可以不执行，但部分情况下JDK输出可能是乱码）
-> cd 根目录\files
-> keytool -genkey -v -keystore sampandroid.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sampandroid
-# 接下来请按照提示输入相关信息
-> keytool -importkeystore -srckeystore sampandroid.jks -destkeystore sampandroid.jks -deststoretype pkcs12
-```
-
-### 2.签名
-
-```bash
-> cd 根目录\files\apk\dist
-> jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore 根目录\files\sampandroid.jks build69.apk sampandroid
-```
-
-根目录\files\apk\dist\build69.apk 为最终可安装版本
-
-## 六.手机上的准备
-
-删除原来的GTASA（如有数据包，请提前备份）
-
-安装 根目录\files\apk\dist\build69.apk
-
-恢复数据包
-
-复制 根目录\data 目录内的目录到安卓跟目录（大多数手机是这样操作的，部分手机操作不一致）
-
-## 七.设置
-
-在手机中打开 Android\obb\com.rockstargames.gtasa\files\SAMP\settings.ini，修改[client]段相关信息（例如服务器ip 游戏昵称）
-
-## 八.愉快的玩♂耍♂
-
-打开手机里的GTA:SA，进入主界面后第二个按键为Multiplayer，点击即可
+8. Divirta-se jogando ♂ 玩 ♂
+Abra o GTA: SA no celular e entre na interface principal.A segunda tecla é Multiplayer.
